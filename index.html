@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PS Vehicle Info — Kokrajhar District</title>
+</head>
+<body>
+
+<h2>App Loading...</h2>
+
+<script>
+const API_URL = "https://script.google.com/macros/s/AKfycbz1XyPoZ9mppXe2RrHMr22niiaWH5RA9mi9BBLsgb-lkoRPg7_9jK7mi4YTAe222Vig/exec";
+
+let DATA = [];
+
+async function syncFromSheets() {
+  try {
+    const res = await fetch(API_URL);
+    const text = await res.text();
+
+    const rows = text.trim().split("\n").map(r => r.split(","));
+    const headers = rows[0];
+
+    DATA = rows.slice(1).map(row => {
+      let obj = {};
+      headers.forEach((h, i) => obj[h.trim()] = row[i]?.replace(/"/g, ""));
+      return obj;
+    });
+
+    console.log("Loaded DATA:", DATA);
+
+  } catch (e) {
+    console.error("Fetch error:", e);
+  }
+}
+
+window.onload = function () {
+  syncFromSheets();
+};
+</script>
+
+</body>
+</html>
